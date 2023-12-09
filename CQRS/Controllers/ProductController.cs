@@ -1,8 +1,7 @@
-﻿using CQRS.Domain.Entitites;
-using CQRS.Domain.Repository;
+﻿using CQRS.Application.Item.Commands;
+using CQRS.Application.Item.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 
 
 
@@ -14,48 +13,33 @@ namespace CQRS.Controllers
     {
         private readonly IMediator _mediator;
 
-        private readonly IProductRepository _productRepository;
-        // GET: api/<ValuesController>
-
-        public ProductController(IProductRepository productRepository, IMediator mediator) { 
+        public ProductController(IMediator mediator) { 
 
             _mediator= mediator;
-            _productRepository = productRepository; 
         }
 
         [HttpGet]
         public async Task<ActionResult> GetProducts()
         {
-            var product = await _productRepository.GetAllAsync();
-            return Ok(product);
+
+            var products = await _mediator.Send(new GetAllProductsQuery());
+
+            return Ok(products);
         }
 
-        // GET api/<ValuesController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult> GetAsync(string id)
         {
-            var objectId = new ObjectId(id);
 
-            var product = await _productRepository.GetProductByIdAsync(objectId);
-            if (product is null)
-            {
-                return NotFound("User not found");
-            }
-
+            var product = await _mediator.Send(new GetProductByID() { Id = id });
             return Ok(product);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(string name,string? description)
         {
-            var product = new Product()
-            {
-                Name = name,
-                Description = description
-            };
-            await _productRepository.AddProductAsync(product);
 
-
+            var product = await _mediator.Send(new CreateProductCommand() { Name=name,Description=description});
             return Ok(product);
         }
 
@@ -63,16 +47,14 @@ namespace CQRS.Controllers
         [HttpPut]
         public async Task<IActionResult> Put(string ID, string name, string description)
         {
-            var objectId = new ObjectId(ID);
-            await _productRepository.UpdateProductAsync(objectId, name, description);
+            await _mediator.Send(new UpdateProductCommand() { Id = ID, Name = name, Description = description });
             return Ok();
         }
 
-        // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            await _productRepository.DeleteProductAsync(new ObjectId(id));
+            await _mediator.Send(new DeleteProductCommand() { id = id});
 
             return Ok();
         }
