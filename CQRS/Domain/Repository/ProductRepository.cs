@@ -1,67 +1,59 @@
-﻿using CQRS.Domain.Entitites;
+﻿using CQRS.Domain.Entities;
 using CQRS.MongoDB.Base;
+
 using Microsoft.Extensions.Options;
+
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System.Data;
 
-namespace CQRS.Domain.Repository
+namespace CQRS.Domain.Repository;
+
+public class ProductRepository : IProductRepository
 {
-    public class ProductRepository : IProductRepository
+    private readonly IMongoCollection<Product> _product;
+
+    public ProductRepository(IOptions<MongoDBSettings> settingsOptions)
     {
-        private readonly IMongoCollection<Product> _product;
+        var client = new MongoClient(settingsOptions.Value.ConnectionString);
+        var userDatabase = client.GetDatabase(settingsOptions.Value.ProductDatabaseName);
 
-        public ProductRepository(IOptions<MongoDBSettings> settingsOptions)
-        {
-            var client = new MongoClient(settingsOptions.Value.ConnectionString);
-            var userDatabase = client.GetDatabase(settingsOptions.Value.ProductDatabaseName);
+        _product = userDatabase.GetCollection<Product>("Warehouse");
+    }
 
-            _product = userDatabase.GetCollection<Product>("Warehouse");
-        }
+    public async Task<ICollection<Product>> GetAllAsync()
+    {
+        return await _product.AsQueryable().ToListAsync();
+    }
 
+    public async Task<Product> AddProductAsync(Product product)
+    {
+        await _product.InsertOneAsync(product);
 
-        public async Task<ICollection<Product>> GetAllAsync()
-        {
-            return await _product.AsQueryable().ToListAsync();
-        }
+        return product;
+    }
 
-        public async Task<Product> AddProductAsync(Product toCreate)
-        {
-            await _product.InsertOneAsync(toCreate);
-            return toCreate;
-        }
+    public async Task DeleteProductAsync(ObjectId productId)
+    {
+        var filter = Builders<Product>.Filter
+            .Eq(product => product.Id, productId);
 
+        await _product.DeleteOneAsync(filter);
+    }
 
-
-        public async Task DeleteProductAsync(ObjectId ProductId)
-        {
-            var filter = Builders<Product>.Filter
-                        .Eq(u => u.Id, ProductId);
-
-            await _product.DeleteOneAsync(filter);
-        }
-
-
-
-
-        public async Task<Product> GetProductByIdAsync(ObjectId id)
-        {
-            return await _product.Find(u => u.Id == id).FirstOrDefaultAsync();
-        }
-
-
-        public async Task UpdateProductAsync(ObjectId id, string name, string description)
-        {
-            var filter = Builders<Product>.Filter
+    public async Task<Product> GetProductByIdAsync(ObjectId id)
+    {
+        return await _product.Find(product => product.Id == id).FirstOrDefaultAsync();
+    }
+    
+    public async Task UpdateProductAsync(ObjectId id, string name, string description)
+    {
+        var filter = Builders<Product>.Filter
             .Eq(u => u.Id, id);
 
-            var update = Builders<Product>.Update
-                .Set(u => u.Name, name)
-                .Set(d=>d.Description,description);
+        var update = Builders<Product>.Update
+            .Set(product => product.Name, name)
+            .Set(product => product.Description, description);
 
-            await _product.UpdateOneAsync(filter, update);
-
-        }
+        await _product.UpdateOneAsync(filter, update);
     }
 }
-

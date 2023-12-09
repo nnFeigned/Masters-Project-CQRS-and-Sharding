@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson;
 
-namespace CQRS.Domain.Entitites;
+namespace CQRS.Domain.Entities;
 
 public class Product
 {

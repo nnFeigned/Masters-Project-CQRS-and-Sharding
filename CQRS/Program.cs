@@ -1,11 +1,5 @@
-using CQRS.MongoDB.Base;
-using CQRS;
 using CQRS.Domain.Repository;
-using Microsoft.AspNetCore.Hosting;
-using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
-
-
+using CQRS.MongoDB.Base;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,15 +9,10 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
-
 builder.Services.AddControllers();
-
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-
-
 
 
 var app = builder.Build();
