@@ -12,12 +12,9 @@ public class ProductRepository : IProductRepository
 {
     private readonly IMongoCollection<Product> _product;
 
-    public ProductRepository(IOptions<MongoDBSettings> settingsOptions)
+    public ProductRepository(IMongoCollection<Product> _collection)
     {
-        var client = new MongoClient(settingsOptions.Value.ConnectionString);
-        var userDatabase = client.GetDatabase(settingsOptions.Value.ProductDatabaseName);
-
-        _product = userDatabase.GetCollection<Product>("Warehouse");
+        _product = _collection;
     }
 
     public async Task<ICollection<Product>> GetAllAsync()
@@ -28,7 +25,6 @@ public class ProductRepository : IProductRepository
     public async Task<Product> AddProductAsync(Product product)
     {
         await _product.InsertOneAsync(product);
-
         return product;
     }
 
@@ -36,7 +32,6 @@ public class ProductRepository : IProductRepository
     {
         var filter = Builders<Product>.Filter
             .Eq(product => product.Id, productId);
-
         await _product.DeleteOneAsync(filter);
     }
 

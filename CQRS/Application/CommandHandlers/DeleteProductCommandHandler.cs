@@ -9,7 +9,9 @@ namespace CQRS.Application.CommandHandlers;
 
 public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
 {
+
     private readonly IProductRepository _productRepository;
+
 
     public DeleteProductCommandHandler(IProductRepository productRepository)
     {
@@ -18,6 +20,6 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
 
     Task IRequestHandler<DeleteProductCommand>.Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
-        return _productRepository.DeleteProductAsync(new ObjectId(request.id));
+        return _productRepository.DeleteProductAsync(new ObjectId(request.Id));
     }
 }

@@ -1,8 +1,6 @@
-﻿using CQRS.Application.Commands;
+﻿using MediatR;
+using CQRS.Application.Commands;
 using CQRS.Application.Queries;
-
-using MediatR;
-
 using Microsoft.AspNetCore.Mvc;
 
 namespace CQRS.Controllers;
@@ -21,9 +19,7 @@ public class ProductController : ControllerBase
     [HttpGet]
     public async Task<ActionResult> GetProducts()
     {
-
         var products = await _mediator.Send(new GetAllProductsQuery());
-
         return Ok(products);
     }
 
@@ -31,7 +27,6 @@ public class ProductController : ControllerBase
     public async Task<ActionResult> GetAsync(string id)
     {
         var product = await _mediator.Send(new GetProductByIdQuery { Id = id });
-
         return Ok(product);
     }
 
@@ -39,7 +34,6 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> Post(string name, string? description)
     {
         var product = await _mediator.Send(new CreateProductCommand { Name = name, Description = description });
-
         return Ok(product);
     }
 
@@ -48,15 +42,13 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> Put(string id, string name, string description)
     {
         await _mediator.Send(new UpdateProductCommand { Id = id, Name = name, Description = description });
-
         return Ok();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
-        await _mediator.Send(new DeleteProductCommand { id = id });
-
+        await _mediator.Send(new DeleteProductCommand { Id = id });
         return Ok();
     }
 }

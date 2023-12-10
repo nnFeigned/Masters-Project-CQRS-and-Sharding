@@ -10,7 +10,10 @@ namespace CQRS.Application.QueryHandlers;
 
 public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Product>
 {
+
     private readonly IProductRepository _productRepository;
+
+
     public GetProductByIdQueryHandler(IProductRepository productRepository)
     {
         _productRepository = productRepository;

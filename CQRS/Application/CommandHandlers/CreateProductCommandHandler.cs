@@ -8,7 +8,9 @@ namespace CQRS.Application.CommandHandlers;
 
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Product>
 {
+
     private readonly IProductRepository _productRepository;
+
 
     public CreateProductCommandHandler(IProductRepository productRepository)
     {
