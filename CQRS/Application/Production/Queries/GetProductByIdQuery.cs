@@ -2,7 +2,7 @@
 
 using MediatR;
 
-namespace CQRS.Application.Queries;
+namespace CQRS.Application.Production.Queries;
 
 public class GetProductByIdQuery : IRequest<Product>
 {

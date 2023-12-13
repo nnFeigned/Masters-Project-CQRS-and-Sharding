@@ -1,7 +1,4 @@
 ﻿using CQRS.Domain.Entities;
-using CQRS.MongoDB.Base;
-
-using Microsoft.Extensions.Options;
 
 using MongoDB.Bson;
 using MongoDB.Driver;

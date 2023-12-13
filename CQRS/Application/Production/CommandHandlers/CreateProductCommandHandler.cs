@@ -1,10 +1,10 @@
-﻿using CQRS.Application.Commands;
+﻿using CQRS.Application.Production.Commands;
 using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
 
 using MediatR;
 
-namespace CQRS.Application.CommandHandlers;
+namespace CQRS.Application.Production.CommandHandlers;
 
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Product>
 {

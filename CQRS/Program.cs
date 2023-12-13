@@ -1,25 +1,26 @@
 using CQRS.Domain.Entities;
-using CQRS.Domain;
 using CQRS.Domain.Repository;
 using CQRS.MongoDB.Base;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
+using CQRS.MongoDB.Util;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<MongoDBSettings>(mongoDbSettings => builder.Configuration.GetSection("MongoDbSettings").Bind(mongoDbSettings));
 
-builder.Services.AddScoped(sp =>
-{
-    var settings = sp.GetRequiredService<IOptions<MongoDBSettings>>();
-    var client = new MongoClient(settings.Value.ConnectionString);
-    var database = client.GetDatabase(settings.Value.ProductDatabaseName);
-    return database.GetCollection<Product>(settings.Value.ProductCollectionName);
-});
+
+
+builder.Services.AddScoped(sp => MongoService.GetMongoCollection<Product>(sp));
+builder.Services.AddScoped(sp => MongoService.GetMongoCollection<Category>(sp));
+builder.Services.AddScoped(sp => MongoService.GetMongoCollection<Image>(sp));
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+builder.Services.AddScoped<IImagesRepository, ImagesRepository>();
 
 builder.Services.AddControllers();
 

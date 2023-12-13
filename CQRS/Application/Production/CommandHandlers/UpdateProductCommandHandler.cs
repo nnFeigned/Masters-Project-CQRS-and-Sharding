@@ -1,11 +1,11 @@
-﻿using CQRS.Application.Commands;
+﻿using CQRS.Application.Production.Commands;
 using CQRS.Domain.Repository;
 
 using MediatR;
 
 using MongoDB.Bson;
 
-namespace CQRS.Application.CommandHandlers;
+namespace CQRS.Application.Production.CommandHandlers;
 
 public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
 {

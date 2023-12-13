@@ -1,4 +1,4 @@
-﻿using CQRS.Application.Queries;
+﻿using CQRS.Application.Production.Queries;
 using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
 
@@ -6,7 +6,7 @@ using MediatR;
 
 using MongoDB.Bson;
 
-namespace CQRS.Application.QueryHandlers;
+namespace CQRS.Application.Production.QueryHandlers;
 
 public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Product>
 {

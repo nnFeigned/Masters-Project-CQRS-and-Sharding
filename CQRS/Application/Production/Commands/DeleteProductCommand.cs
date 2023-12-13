@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace CQRS.Application.Commands;
+namespace CQRS.Application.Production.Commands;
 
 public class DeleteProductCommand : IRequest
 {

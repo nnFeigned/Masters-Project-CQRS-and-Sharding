@@ -2,9 +2,9 @@
 using CQRS.Domain.Entities;
 
 using MediatR;
-using CQRS.Application.Queries;
+using CQRS.Application.Production.Queries;
 
-namespace CQRS.Application.QueryHandlers;
+namespace CQRS.Application.Production.QueryHandlers;
 
 public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<Product>>
 {
