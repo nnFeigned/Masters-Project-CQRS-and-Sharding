@@ -1,4 +1,5 @@
 ﻿using CQRS.Application.Photos.Commands;
+using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
 
 using MediatR;
@@ -10,9 +11,9 @@ namespace CQRS.Application.Photos.CommandHandlers;
 public class UpdateImageCommandHandler : IRequestHandler<UpdateImageCommand>
 {
 
-    private readonly IImagesRepository _imagesRepository;
+    private readonly IWriteRepository<Image> _imagesRepository;
 
-    public UpdateImageCommandHandler(IImagesRepository imagesRepository)
+    public UpdateImageCommandHandler(IWriteRepository<Image> imagesRepository)
     {
         _imagesRepository = imagesRepository;
     }
@@ -22,6 +23,12 @@ public class UpdateImageCommandHandler : IRequestHandler<UpdateImageCommand>
 
         var CategoryId = new ObjectId(request.Id);
 
-        await _imagesRepository.UpdateImageAsync(CategoryId, request.FileName);
+        var Image=new Image
+        {
+            Id = CategoryId,
+            FileName = request.FileName
+        };
+
+        await _imagesRepository.UpdateAsync(Image);
     }
 }

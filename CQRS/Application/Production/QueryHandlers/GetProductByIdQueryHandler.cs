@@ -11,10 +11,10 @@ namespace CQRS.Application.Production.QueryHandlers;
 public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Product>
 {
 
-    private readonly IProductRepository _productRepository;
+    private readonly IReadRepository<Product> _productRepository;
 
 
-    public GetProductByIdQueryHandler(IProductRepository productRepository)
+    public GetProductByIdQueryHandler(IReadRepository<Product> productRepository)
     {
         _productRepository = productRepository;
     }
@@ -22,7 +22,7 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
     {
         var id = new ObjectId(request.Id);
 
-        var product = await _productRepository.GetProductByIdAsync(id);
+        var product = await _productRepository.GetEntityByIdAsync(id);
 
         return product;
     }

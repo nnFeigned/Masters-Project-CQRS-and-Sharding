@@ -1,4 +1,6 @@
 ﻿using CQRS.Application.Categories.Commands;
+using CQRS.Application.Photos.Commands;
+using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
 
 using MediatR;
@@ -7,19 +9,19 @@ using MongoDB.Bson;
 
 namespace CQRS.Application.Categories.CommandHandlers;
 
-public class DeleteImageCommandHandler : IRequestHandler<DeleteCategoryCommand>
+public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryCommand>
 {
     
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IWriteRepository<Category> _categoryRepository;
 
 
-    public DeleteImageCommandHandler(ICategoryRepository CategoryRepository)
+    public DeleteCategoryCommandHandler(IWriteRepository<Category> CategoryRepository)
     {
         _categoryRepository = CategoryRepository;
     }
-
-    Task IRequestHandler<DeleteCategoryCommand>.Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        return _categoryRepository.DeleteCategoryAsync(new ObjectId(request.Id));
+        var productId = new ObjectId(request.Id);
+        await _categoryRepository.DeleteAsync(productId);
     }
 }

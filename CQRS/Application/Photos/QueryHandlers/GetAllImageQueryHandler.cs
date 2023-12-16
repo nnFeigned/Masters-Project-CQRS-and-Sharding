@@ -9,9 +9,9 @@ namespace CQRS.Application.Photos.QueryHandlers;
 public class GetAllImageQueryHandler : IRequestHandler<GetAllImagesQuery, IEnumerable<Image>>
 {
 
-    private readonly IImagesRepository _imageRepository;
+    private readonly IReadRepository<Image> _imageRepository;
 
-    public GetAllImageQueryHandler(IImagesRepository imagesRepository)
+    public GetAllImageQueryHandler(IReadRepository<Image> imagesRepository)
     {
         _imageRepository = imagesRepository;
     }

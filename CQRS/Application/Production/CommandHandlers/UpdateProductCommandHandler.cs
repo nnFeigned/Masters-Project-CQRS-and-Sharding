@@ -1,4 +1,5 @@
 ﻿using CQRS.Application.Production.Commands;
+using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
 
 using MediatR;
@@ -10,9 +11,9 @@ namespace CQRS.Application.Production.CommandHandlers;
 public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
 {
 
-    private readonly IProductRepository _productRepository;
+    private readonly IWriteRepository<Product> _productRepository;
 
-    public UpdateProductCommandHandler(IProductRepository productRepository)
+    public UpdateProductCommandHandler(IWriteRepository<Product> productRepository)
     {
         _productRepository = productRepository;
     }
@@ -22,6 +23,13 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
 
         var productId = new ObjectId(request.Id);
 
-        await _productRepository.UpdateProductAsync(productId, request.Name, request.Description);
+        var Produc =new Product
+        {
+            Id = productId,
+            Name = request.Name,
+            Description = request.Description
+        };
+
+        await _productRepository.UpdateAsync(Produc);
     }
 }

@@ -9,10 +9,10 @@ namespace CQRS.Application.Photos.CommandHandlers;
 public class CreateImageCommandHandler : IRequestHandler<CreateImageCommand, Image>
 {
 
-    private readonly IImagesRepository _imagesRepository;
+    private readonly IWriteRepository<Image> _imagesRepository;
 
 
-    public CreateImageCommandHandler(IImagesRepository imagesRepository)
+    public CreateImageCommandHandler(IWriteRepository<Image> imagesRepository)
     {
         _imagesRepository = imagesRepository;
     }
@@ -24,7 +24,7 @@ public class CreateImageCommandHandler : IRequestHandler<CreateImageCommand, Ima
             FileName = request.FileName
         };
 
-        await _imagesRepository.AddImageAsync(image);
+        await _imagesRepository.AddAsync(image);
 
         return image;
     }

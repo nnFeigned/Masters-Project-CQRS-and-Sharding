@@ -1,12 +1,11 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 
 namespace CQRS.Domain.Entities;
 
-public class Product
+public class Product : BaseEntity
 {
-
-    public ObjectId Id { get; set; }
 
 
     /// <summary>
@@ -21,8 +20,11 @@ public class Product
 
     public ObjectId? CategoryId { get; set; }
 
+    private List<Image> _images = new();
+
+
     [BsonElement("ImageArrayId")]
-    public List<ObjectId>? imageslist { get; set; }
+    public IReadOnlyList<Image> Images => _images;
 
     public Product() { }
 
@@ -32,13 +34,12 @@ public class Product
         Name = name;
         Description = description;
     }
-    public Product(ObjectId id, string name, string? description, ObjectId categoryId, List<ObjectId> images)
+    public Product(ObjectId id, string name, string? description, ObjectId categoryId)
     {
         Id = id;
         Name = name;
         Description = description;
         CategoryId = categoryId;
-        imageslist = images;
     }
 }
 

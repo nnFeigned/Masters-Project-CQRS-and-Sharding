@@ -11,10 +11,10 @@ namespace CQRS.Application.Categories.QueryHandlers;
 public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, Category>
 {
 
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IReadRepository<Category> _categoryRepository;
 
 
-    public GetCategoryByIdQueryHandler(ICategoryRepository categoryRepository)
+    public GetCategoryByIdQueryHandler(IReadRepository<Category> categoryRepository)
     {
         _categoryRepository = categoryRepository;
     }
@@ -22,7 +22,7 @@ public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery,
     {
         var id = new ObjectId(request.Id);
 
-        var product = await _categoryRepository.GetCategoryByIdAsync(id);
+        var product = await _categoryRepository.GetEntityByIdAsync(id);
 
         return product;
     }

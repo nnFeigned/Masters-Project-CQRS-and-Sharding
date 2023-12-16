@@ -9,9 +9,9 @@ namespace CQRS.Application.Production.QueryHandlers;
 public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<Product>>
 {
 
-    private readonly IProductRepository _productRepository;
+    private readonly IReadRepository<Product> _productRepository;
 
-    public GetAllProductsQueryHandler(IProductRepository productRepository)
+    public GetAllProductsQueryHandler(IReadRepository<Product> productRepository)
     {
         _productRepository = productRepository;
     }

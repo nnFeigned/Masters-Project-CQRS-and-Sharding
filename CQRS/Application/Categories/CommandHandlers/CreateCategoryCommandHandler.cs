@@ -6,13 +6,13 @@ using MediatR;
 
 namespace CQRS.Application.Categories.CommandHandlers;
 
-public class CreateImageCommandHandler : IRequestHandler<CreateCategoryCommand, Category>
+public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Category>
 {
 
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IWriteRepository<Category> _categoryRepository;
 
 
-    public CreateImageCommandHandler(ICategoryRepository categoryRepository)
+    public CreateCategoryCommandHandler(IWriteRepository<Category> categoryRepository)
     {
         _categoryRepository = categoryRepository;
     }
@@ -25,7 +25,7 @@ public class CreateImageCommandHandler : IRequestHandler<CreateCategoryCommand, 
             Products = request.Products
         };
 
-        await _categoryRepository.AddCategoryAsync(category);
+        await _categoryRepository.AddAsync(category);
 
         return category;
     }

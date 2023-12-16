@@ -1,4 +1,6 @@
 ﻿using CQRS.Application.Photos.Commands;
+using CQRS.Application.Production.Commands;
+using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
 
 using MediatR;
@@ -10,16 +12,17 @@ namespace CQRS.Application.Photos.CommandHandlers;
 public class DeleteImageCommandHandler : IRequestHandler<DeleteImageCommand>
 {
     
-    private readonly IImagesRepository _imagesRepository;
+    private readonly IWriteRepository<Image> _imagesRepository;
 
 
-    public DeleteImageCommandHandler(IImagesRepository imagesRepository)
+    public DeleteImageCommandHandler(IWriteRepository<Image> imagesRepository)
     {
         _imagesRepository = imagesRepository;
     }
 
-    Task IRequestHandler<DeleteImageCommand>.Handle(DeleteImageCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteImageCommand request, CancellationToken cancellationToken)
     {
-        return _imagesRepository.DeleteImageAsync(new ObjectId(request.Id));
+        var productId = new ObjectId(request.Id);
+        await _imagesRepository.DeleteAsync(productId);
     }
 }

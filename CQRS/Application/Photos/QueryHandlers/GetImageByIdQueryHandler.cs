@@ -12,10 +12,10 @@ namespace CQRS.Application.Categories.QueryHandlers;
 public class GetImageByIdQueryHandler : IRequestHandler<GetImageByIdQuery, Image>
 {
 
-    private readonly IImagesRepository _imagesRepository;
+    private readonly IReadRepository<Image> _imagesRepository;
 
 
-    public GetImageByIdQueryHandler(IImagesRepository imagesRepository)
+    public GetImageByIdQueryHandler(IReadRepository<Image> imagesRepository)
     {
          _imagesRepository = imagesRepository;
     }
@@ -23,7 +23,7 @@ public class GetImageByIdQueryHandler : IRequestHandler<GetImageByIdQuery, Image
     {
         var id = new ObjectId(request.Id);
 
-        var product = await _imagesRepository.GetImageByIdAsync(id);
+        var product = await _imagesRepository.GetEntityByIdAsync(id);
 
         return product;
     }

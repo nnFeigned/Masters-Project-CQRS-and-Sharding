@@ -1,4 +1,5 @@
 ﻿using CQRS.Application.Categories.Commands;
+using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
 
 using MediatR;
@@ -7,12 +8,12 @@ using MongoDB.Bson;
 
 namespace CQRS.Application.Categories.CommandHandlers;
 
-public class UpdateImageCommandHandler : IRequestHandler<UpdateCategoryCommand>
+public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand>
 {
 
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IWriteRepository<Category> _categoryRepository;
 
-    public UpdateImageCommandHandler(ICategoryRepository CategoryRepository)
+    public UpdateCategoryCommandHandler(IWriteRepository<Category> CategoryRepository)
     {
         _categoryRepository = CategoryRepository;
     }
@@ -22,6 +23,13 @@ public class UpdateImageCommandHandler : IRequestHandler<UpdateCategoryCommand>
 
         var CategoryId = new ObjectId(request.Id);
 
-        await _categoryRepository.UpdateCategoryAsync(CategoryId, request.Name, request.Products);
+        var Categor = new Category()
+        {
+            Id = CategoryId,
+            Name = request.Name,
+            Products = request.Products
+        };
+
+        await _categoryRepository.UpdateAsync(Categor);
     }
 }

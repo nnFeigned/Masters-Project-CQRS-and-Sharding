@@ -1,4 +1,5 @@
 ﻿using CQRS.Application.Production.Commands;
+using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
 
 using MediatR;
@@ -10,16 +11,17 @@ namespace CQRS.Application.Production.CommandHandlers;
 public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
 {
 
-    private readonly IProductRepository _productRepository;
+    private readonly IWriteRepository<Product> _productRepository;
 
 
-    public DeleteProductCommandHandler(IProductRepository productRepository)
+    public DeleteProductCommandHandler(IWriteRepository<Product> productRepository)
     {
         _productRepository = productRepository;
     }
 
-    Task IRequestHandler<DeleteProductCommand>.Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
-        return _productRepository.DeleteProductAsync(new ObjectId(request.Id));
+        var productId = new ObjectId(request.Id);
+        await _productRepository.DeleteAsync(productId);
     }
 }

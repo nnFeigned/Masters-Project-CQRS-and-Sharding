@@ -9,9 +9,9 @@ namespace CQRS.Application.Categories.QueryHandlers;
 public class GetAllCategoryQueryHandler : IRequestHandler<GetAllCategoryQuery, IEnumerable<Category>>
 {
 
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly IReadRepository<Category> _categoryRepository;
 
-    public GetAllCategoryQueryHandler(ICategoryRepository categoryRepository)
+    public GetAllCategoryQueryHandler(IReadRepository<Category> categoryRepository)
     {
         _categoryRepository = categoryRepository;
     }

@@ -9,10 +9,10 @@ namespace CQRS.Application.Production.CommandHandlers;
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Product>
 {
 
-    private readonly IProductRepository _productRepository;
+    private readonly IWriteRepository<Product> _productRepository;
 
 
-    public CreateProductCommandHandler(IProductRepository productRepository)
+    public CreateProductCommandHandler(IWriteRepository<Product> productRepository)
     {
         _productRepository = productRepository;
     }
@@ -25,7 +25,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             Description = request.Description
         };
 
-        await _productRepository.AddProductAsync(product);
+        await _productRepository.AddAsync(product);
 
         return product;
     }

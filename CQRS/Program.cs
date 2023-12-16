@@ -16,11 +16,11 @@ builder.Services.AddScoped(sp => MongoService.GetMongoCollection<Image>(sp));
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped(typeof(IReadRepository<>), typeof(MongoReadRepository<>));
+builder.Services.AddScoped(typeof(IWriteRepository<>), typeof(SQLWriteRepository<>));
 
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
-builder.Services.AddScoped<IImagesRepository, ImagesRepository>();
+
 
 builder.Services.AddControllers();
 
