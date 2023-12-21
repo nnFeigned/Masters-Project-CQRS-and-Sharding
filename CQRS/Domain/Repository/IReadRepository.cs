@@ -7,6 +7,6 @@ namespace CQRS.Domain.Repository
     {
         Task<ICollection<T>> GetAllAsync();
 
-        Task<T> GetEntityByIdAsync(ObjectId id);
+        Task<T> GetEntityByIdAsync(Guid id);
     }
 }

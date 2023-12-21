@@ -6,10 +6,10 @@ namespace CQRS.Domain.Entities
     public class Category : BaseEntity
     {
 
-        public  string  Name { get; set; }
+        public string Name { get; set; }
 
         [BsonElement("ProductsId")]
-        public List<ObjectId> Products { get; set; } = new List<ObjectId>();
+        public virtual ICollection<Product> ProductIds { get; set; }
     }
 
 }

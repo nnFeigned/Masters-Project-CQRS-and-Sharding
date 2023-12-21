@@ -21,7 +21,7 @@ public class GetImageByIdQueryHandler : IRequestHandler<GetImageByIdQuery, Image
     }
     public async Task<Image> Handle(GetImageByIdQuery request, CancellationToken cancellationToken)
     {
-        var id = new ObjectId(request.Id);
+        var id = new Guid(request.Id);
 
         var product = await _imagesRepository.GetEntityByIdAsync(id);
 

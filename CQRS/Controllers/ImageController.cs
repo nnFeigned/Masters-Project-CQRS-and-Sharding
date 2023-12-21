@@ -20,30 +20,30 @@ namespace CQRS.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetCategoryAsync(string id)
+        public async Task<ActionResult> GetCategoryAsync(GetImageByIdQuery model)
         {
-            var product = await _mediator.Send(new GetImageByIdQuery { Id = id });
+            var product = await _mediator.Send(new GetImageByIdQuery { Id = model.Id });
             return Ok(product);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostCategory(string name)
+        public async Task<IActionResult> PostCategory(CreateImageCommand model)
         {
-            var product = await _mediator.Send(new CreateImageCommand { FileName = name });
+            var product = await _mediator.Send(new CreateImageCommand { FileName = model.FileName });
             return Ok(product);
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutCategory(string id, string name)
+        public async Task<IActionResult> PutCategory(UpdateImageCommand model)
         {
-            await _mediator.Send(new UpdateImageCommand { Id = id, FileName = name });
+            await _mediator.Send(new UpdateImageCommand { Id = model.Id, FileName = model.FileName });
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(string id)
+        public async Task<IActionResult> DeleteCategory(DeleteImageCommand model)
         {
-            await _mediator.Send(new DeleteImageCommand { Id = id });
+            await _mediator.Send(new DeleteImageCommand { Id = model.Id });
             return Ok();
         }
     }

@@ -19,30 +19,30 @@ namespace CQRS.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetProductAsync(string id)
+        public async Task<ActionResult> GetProductAsync(GetProductByIdQuery model)
         {
-            var product = await _mediator.Send(new GetProductByIdQuery { Id = id });
+            var product = await _mediator.Send(new GetProductByIdQuery { Id = model.Id });
             return Ok(product);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostProudct(string name, string? description)
+        public async Task<IActionResult> PostProudct(CreateProductCommand model)
         {
-            var product = await _mediator.Send(new CreateProductCommand { Name = name, Description = description });
+            var product = await _mediator.Send(new CreateProductCommand { Name = model.Name, Description = model.Name });
             return Ok(product);
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutProduct(string id, string name, string description)
+        public async Task<IActionResult> PutProduct(UpdateProductCommand model)
         {
-            await _mediator.Send(new UpdateProductCommand { Id = id, Name = name, Description = description });
+            await _mediator.Send(new UpdateProductCommand { Id = model.Id, Name = model.Name, Description = model.Description });
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(string id)
+        public async Task<IActionResult> DeleteProduct(DeleteProductCommand model)
         {
-            await _mediator.Send(new DeleteProductCommand { Id = id });
+            await _mediator.Send(new DeleteProductCommand { Id = model.Id });
             return Ok();
         }
     }

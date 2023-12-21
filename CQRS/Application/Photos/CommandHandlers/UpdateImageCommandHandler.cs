@@ -1,7 +1,7 @@
 ﻿using CQRS.Application.Photos.Commands;
 using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
-
+using CQRS.Domain.Repository.Write;
 using MediatR;
 
 using MongoDB.Bson;
@@ -21,7 +21,7 @@ public class UpdateImageCommandHandler : IRequestHandler<UpdateImageCommand>
     public async Task Handle(UpdateImageCommand request, CancellationToken cancellationToken)
     {
 
-        var CategoryId = new ObjectId(request.Id);
+        var CategoryId = new Guid(request.Id);
 
         var Image=new Image
         {
@@ -29,6 +29,6 @@ public class UpdateImageCommandHandler : IRequestHandler<UpdateImageCommand>
             FileName = request.FileName
         };
 
-        await _imagesRepository.UpdateAsync(Image);
+        await _imagesRepository.UpdateEntityAsync(Image);
     }
 }

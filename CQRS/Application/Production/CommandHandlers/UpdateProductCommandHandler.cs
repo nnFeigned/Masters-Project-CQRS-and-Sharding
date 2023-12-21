@@ -1,7 +1,7 @@
 ﻿using CQRS.Application.Production.Commands;
 using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
-
+using CQRS.Domain.Repository.Write;
 using MediatR;
 
 using MongoDB.Bson;
@@ -21,7 +21,8 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
     public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
 
-        var productId = new ObjectId(request.Id);
+        var productId = new Guid(request.Id);
+        //new ObjectId(request.Id);
 
         var Produc =new Product
         {
@@ -30,6 +31,6 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
             Description = request.Description
         };
 
-        await _productRepository.UpdateAsync(Produc);
+        await _productRepository.UpdateEntityAsync(Produc);
     }
 }

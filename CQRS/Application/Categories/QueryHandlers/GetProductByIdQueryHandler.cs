@@ -20,7 +20,7 @@ public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery,
     }
     public async Task<Category> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
-        var id = new ObjectId(request.Id);
+        var id = new Guid(request.Id);
 
         var product = await _categoryRepository.GetEntityByIdAsync(id);
 

@@ -2,9 +2,9 @@
 using CQRS.Application.Photos.Commands;
 using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
-
+using CQRS.Domain.Repository.Write;
 using MediatR;
-
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 
 namespace CQRS.Application.Categories.CommandHandlers;
@@ -21,7 +21,7 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
     }
     public async Task Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        var productId = new ObjectId(request.Id);
-        await _categoryRepository.DeleteAsync(productId);
+        var productId = new Guid(request.Id);
+        await _categoryRepository.DeleteEntityAsync(productId);
     }
 }

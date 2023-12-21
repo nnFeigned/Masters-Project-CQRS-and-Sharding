@@ -5,7 +5,6 @@ namespace CQRS.Domain.Entities
 {
     public class BaseEntity
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

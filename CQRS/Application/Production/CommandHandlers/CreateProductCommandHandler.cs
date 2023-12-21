@@ -1,7 +1,7 @@
 ﻿using CQRS.Application.Production.Commands;
 using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
-
+using CQRS.Domain.Repository.Write;
 using MediatR;
 
 namespace CQRS.Application.Production.CommandHandlers;
@@ -21,11 +21,12 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
     {
         var product = new Product
         {
+            Id = Guid.NewGuid(),
             Name = request.Name,
             Description = request.Description
         };
 
-        await _productRepository.AddAsync(product);
+        await _productRepository.AddEntityAsync(product);
 
         return product;
     }

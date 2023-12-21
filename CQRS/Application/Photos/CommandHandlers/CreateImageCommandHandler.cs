@@ -1,7 +1,7 @@
 ﻿using CQRS.Application.Photos.Commands;
 using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
-
+using CQRS.Domain.Repository.Write;
 using MediatR;
 
 namespace CQRS.Application.Photos.CommandHandlers;
@@ -21,10 +21,11 @@ public class CreateImageCommandHandler : IRequestHandler<CreateImageCommand, Ima
     {
         var image = new Image
         {
+            Id = Guid.NewGuid(),
             FileName = request.FileName
         };
 
-        await _imagesRepository.AddAsync(image);
+        await _imagesRepository.AddEntityAsync(image);
 
         return image;
     }

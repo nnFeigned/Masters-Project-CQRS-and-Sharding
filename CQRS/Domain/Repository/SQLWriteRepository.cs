@@ -9,35 +9,36 @@ namespace CQRS.Domain.Repository
 {
     public class SQLWriteRepository<T> : IWriteRepository<T> where T : BaseEntity
     {
-        private IMongoCollection<T> coll;
+        private readonly DbSet<T> _dbSet;
+        private readonly MagazineDbContext _dbContext;
 
-        public SQLWriteRepository(IMongoCollection<T> dbContext)
+        public SQLWriteRepository(MagazineDbContext dbContext)
         {
-            coll = dbContext;
+            _dbContext = dbContext;
+            _dbSet = dbContext.Set<T>();
         }
-
-        public async Task<T> AddAsync(T entity)
+        public async Task<T> AddEntityAsync(T entity)
         {
-            //_dbContext.Set<T>().Add(entity);
-            //await _dbContext.SaveChangesAsync();
-            //return entity;
+            await _dbSet.AddAsync(entity);
+
+            await _dbContext.SaveChangesAsync();
             return entity;
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task UpdateEntityAsync(T entity)
         {
-            //_dbContext.Set<T>().Update(entity);
-            //await _dbContext.SaveChangesAsync();
+            _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(ObjectId id)
+        public async Task DeleteEntityAsync(Guid id)
         {
-            //var entity = await _dbContext.Set<T>().FindAsync(id);
-            //if (entity != null)
-            //{
-            //    _dbContext.Set<T>().Remove(entity);
-            //    await _dbContext.SaveChangesAsync();
-            //}
+            var entity = await _dbSet.FindAsync(id);
+            if (entity != null)
+            {
+                _dbSet.Remove(entity);
+                await _dbContext.SaveChangesAsync();
+            }
         }
     }
 }

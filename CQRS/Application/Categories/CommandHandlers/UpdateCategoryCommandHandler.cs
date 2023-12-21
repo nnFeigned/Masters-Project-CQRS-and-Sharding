@@ -1,9 +1,9 @@
 ﻿using CQRS.Application.Categories.Commands;
 using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
-
+using CQRS.Domain.Repository.Write;
 using MediatR;
-
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
 
 namespace CQRS.Application.Categories.CommandHandlers;
@@ -21,15 +21,13 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
     public async Task Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
 
-        var CategoryId = new ObjectId(request.Id);
 
-        var Categor = new Category()
+        var Categor = new Category
         {
-            Id = CategoryId,
             Name = request.Name,
-            Products = request.Products
+            ProductIds = request.Products
         };
 
-        await _categoryRepository.UpdateAsync(Categor);
+        await _categoryRepository.UpdateEntityAsync(Categor);
     }
 }

@@ -4,9 +4,10 @@ namespace CQRS.Domain.Repository
 {
     public interface IWriteRepository<T>
     {
-        Task<T> AddAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(ObjectId id);
+
+        Task<T> AddEntityAsync(T entity);
+        Task UpdateEntityAsync(T entity);
+        Task DeleteEntityAsync(Guid id);
 
     }
 }

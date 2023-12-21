@@ -18,9 +18,9 @@ namespace CQRS.Domain.Repository
             return await _collection.AsQueryable().ToListAsync();
         }
 
-        public async Task<T> GetEntityByIdAsync(ObjectId id)
+        public async Task<T> GetEntityByIdAsync(Guid id)
         {
-            return await _collection.Find(entity => entity.Id == id).FirstOrDefaultAsync();
+            return await _collection.Find(entity =>  entity.Id == id).FirstOrDefaultAsync();
         }
 
     }

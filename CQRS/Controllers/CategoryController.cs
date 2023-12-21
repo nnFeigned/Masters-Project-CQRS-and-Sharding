@@ -22,30 +22,30 @@ namespace CQRS.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetCategoryAsync(string id)
+        public async Task<ActionResult> GetCategoryAsync(GetCategoryByIdQuery model)
         {
-            var product = await _mediator.Send(new GetCategoryByIdQuery { Id = id });
+            var product = await _mediator.Send(new GetCategoryByIdQuery { Id = model.Id });
             return Ok(product);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostCategory(string name, List<ObjectId> listProductId)
+        public async Task<IActionResult> PostCategory(CreateCategoryCommand model)
         {
-            var product = await _mediator.Send(new CreateCategoryCommand { Name = name, Products = listProductId });
+            var product = await _mediator.Send(new CreateCategoryCommand { Name = model.Name, Products = model.Products });
             return Ok(product);
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutCategory(string id, string name, List<ObjectId> listProductId)
+        public async Task<IActionResult> PutCategory(UpdateCategoryCommand model)
         {
-            await _mediator.Send(new UpdateCategoryCommand { Id = id, Name = name, Products = listProductId });
+            await _mediator.Send(new UpdateCategoryCommand { Id = model.Id, Name = model.Name, Products = model.Products });
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(string id)
+        public async Task<IActionResult> DeleteCategory(DeleteCategoryCommand model)
         {
-            await _mediator.Send(new DeleteCategoryCommand { Id = id });
+            await _mediator.Send(new DeleteCategoryCommand { Id = model.Id });
             return Ok();
         }
     }
