@@ -1,18 +1,16 @@
 ﻿using CQRS.Domain.Entities;
-using MongoDB.Bson;
-using MongoDB.Driver;
+
 using Microsoft.EntityFrameworkCore;
 using CQRS.DataContext;
 
-
 namespace CQRS.Domain.Repository
 {
-    public class SQLWriteRepository<T> : IWriteRepository<T> where T : BaseEntity
+    public class SqlWriteRepository<T> : IWriteRepository<T> where T : BaseEntity
     {
         private readonly DbSet<T> _dbSet;
-        private readonly MagazineDbContext _dbContext;
+        private readonly ShopDbContext _dbContext;
 
-        public SQLWriteRepository(MagazineDbContext dbContext)
+        public SqlWriteRepository(ShopDbContext dbContext)
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<T>();

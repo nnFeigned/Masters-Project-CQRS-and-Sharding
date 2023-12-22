@@ -1,7 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace CQRS.Domain.Entities
+﻿namespace CQRS.Domain.Entities
 {
     public class BaseEntity
     {

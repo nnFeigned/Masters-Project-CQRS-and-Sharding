@@ -2,10 +2,14 @@
 
 using MediatR;
 
-namespace CQRS.Application.Production.Commands;
+namespace CQRS.Application.Products.Commands;
 
 public class CreateProductCommand : IRequest<Product>
 {
     public required string Name { get; set; }
     public string? Description { get; set; }
+
+    public Guid CategoryId { get; set; }
+
+    // Add images here
 }

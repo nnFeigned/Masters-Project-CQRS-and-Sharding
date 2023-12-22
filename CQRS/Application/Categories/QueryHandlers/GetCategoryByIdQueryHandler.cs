@@ -4,26 +4,14 @@ using CQRS.Domain.Repository;
 
 using MediatR;
 
-using MongoDB.Bson;
-
 namespace CQRS.Application.Categories.QueryHandlers;
 
-public class GetCategoryByIdQueryHandler : IRequestHandler<GetCategoryByIdQuery, Category>
+public class GetCategoryByIdQueryHandler(IReadRepository<Category> categoryRepository) : IRequestHandler<GetCategoryByIdQuery, Category?>
 {
-
-    private readonly IReadRepository<Category> _categoryRepository;
-
-
-    public GetCategoryByIdQueryHandler(IReadRepository<Category> categoryRepository)
+    public async Task<Category?> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
     {
-        _categoryRepository = categoryRepository;
-    }
-    public async Task<Category> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
-    {
-        var id = new Guid(request.Id);
+        var category = await categoryRepository.GetEntityByIdAsync(request.Id);
 
-        var product = await _categoryRepository.GetEntityByIdAsync(id);
-
-        return product;
+        return category;
     }
 }

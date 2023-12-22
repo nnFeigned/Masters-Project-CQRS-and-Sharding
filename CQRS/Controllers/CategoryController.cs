@@ -1,51 +1,52 @@
 ﻿using CQRS.Application.Categories.Commands;
 using CQRS.Application.Categories.Queries;
-using CQRS.Domain.Entities;
+
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using MongoDB.Bson;
 
 namespace CQRS.Controllers
 {
     [Route("api/[controller]")]
-    public class CategoryController : BaseController
+    public class CategoryController(IMediator mediator) : BaseController(mediator)
     {
-        public CategoryController(IMediator mediator) : base(mediator) { }
-
         [HttpGet]
         public async Task<ActionResult> GetCategories()
         {
-            var products = await _mediator.Send(new GetAllCategoryQuery());
-            return Ok(products);
+            var categories = await Mediator.Send(new GetAllCategoryQuery());
+            return Ok(categories);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetCategoryAsync(GetCategoryByIdQuery model)
+        public async Task<ActionResult> GetCategoryAsync(GetCategoryByIdQuery getCategoryByIdQuery)
         {
-            var product = await _mediator.Send(new GetCategoryByIdQuery { Id = model.Id });
-            return Ok(product);
+            var category = await Mediator.Send(getCategoryByIdQuery);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(category);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostCategory(CreateCategoryCommand model)
+        public async Task<IActionResult> CreateCategory(CreateCategoryCommand createCategoryCommand)
         {
-            var product = await _mediator.Send(new CreateCategoryCommand { Name = model.Name, Products = model.Products });
-            return Ok(product);
+            var category = await Mediator.Send(createCategoryCommand);
+            return Ok(category);
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutCategory(UpdateCategoryCommand model)
+        public async Task<IActionResult> PutCategory(UpdateCategoryCommand updateCategoryCommand)
         {
-            await _mediator.Send(new UpdateCategoryCommand { Id = model.Id, Name = model.Name, Products = model.Products });
+            await Mediator.Send(updateCategoryCommand);
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(DeleteCategoryCommand model)
+        public async Task<IActionResult> DeleteCategory(DeleteCategoryCommand deleteCategoryCommand)
         {
-            await _mediator.Send(new DeleteCategoryCommand { Id = model.Id });
+            await Mediator.Send(deleteCategoryCommand);
             return Ok();
         }
     }

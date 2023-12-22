@@ -1,7 +1,4 @@
-﻿using CQRS.Domain.Entities;
-using MongoDB.Bson;
-
-namespace CQRS.Domain.Repository
+﻿namespace CQRS.Domain.Repository
 {
     public interface IReadRepository<T>
     {

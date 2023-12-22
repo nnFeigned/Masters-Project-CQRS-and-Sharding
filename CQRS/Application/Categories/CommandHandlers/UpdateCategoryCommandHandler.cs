@@ -1,33 +1,25 @@
 ﻿using CQRS.Application.Categories.Commands;
 using CQRS.Domain.Entities;
 using CQRS.Domain.Repository;
-using CQRS.Domain.Repository.Write;
+
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using MongoDB.Bson;
 
 namespace CQRS.Application.Categories.CommandHandlers;
 
-public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand>
+public class UpdateCategoryCommandHandler(IWriteRepository<Category> categoryRepository) : IRequestHandler<UpdateCategoryCommand>
 {
-
-    private readonly IWriteRepository<Category> _categoryRepository;
-
-    public UpdateCategoryCommandHandler(IWriteRepository<Category> CategoryRepository)
-    {
-        _categoryRepository = CategoryRepository;
-    }
-
     public async Task Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-
-
-        var Categor = new Category
+        var category = new Category
         {
             Name = request.Name,
-            ProductIds = request.Products
+
+            // It will not work like that, you need to check what was added, what changed, what removed
+            // Check https://learn.microsoft.com/en-us/ef/core/saving/disconnected-entities
+            // Handling deletes code example
+            Products = request.Products
         };
 
-        await _categoryRepository.UpdateEntityAsync(Categor);
+        await categoryRepository.UpdateEntityAsync(category);
     }
 }

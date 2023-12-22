@@ -4,7 +4,7 @@ using MediatR;
 
 namespace CQRS.Application.Categories.Queries;
 
-public class GetCategoryByIdQuery : IRequest<Category>
+public class GetCategoryByIdQuery : IRequest<Category?>
 {
-    public required string Id { get; set; }
+    public required Guid Id { get; set; }
 }
