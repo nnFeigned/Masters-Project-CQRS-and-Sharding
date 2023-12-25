@@ -20,6 +20,7 @@ builder.Services.AddScoped(MongoDbContext.GetMongoCollection<Category>);
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(MongoReadRepository<>));
 builder.Services.AddScoped(typeof(IWriteRepository<>), typeof(SqlWriteRepository<>));
 builder.Services.AddScoped(typeof(ISyncRepository<>), typeof(SqlToMongoSyncRepository<>));
+builder.Services.AddScoped<IEventLogRepository, EventLogRepository>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
