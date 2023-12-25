@@ -29,8 +29,6 @@ public class SyncHostedService(IServiceProvider services) : IHostedService, IDis
         await SyncProducts(eventLogRepository, syncProductRepository);
     }
 
-
-
     private static async Task SyncProducts(IEventLogRepository eventLogRepository, ISyncRepository<Product> syncProductRepository)
     {
         var productLogs = await eventLogRepository.GetAll()
