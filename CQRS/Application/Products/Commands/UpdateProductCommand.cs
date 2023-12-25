@@ -8,5 +8,6 @@ public class UpdateProductCommand : IRequest
     public required string Name { get; set; }
     public string? Description { get; set; }
 
-    // Add images here
+    public Guid CategoryId { get; set; }
+    public List<string> fileNames { get; set; }
 }

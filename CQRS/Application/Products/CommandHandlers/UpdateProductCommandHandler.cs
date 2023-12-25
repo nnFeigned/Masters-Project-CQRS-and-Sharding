@@ -13,11 +13,21 @@ public class UpdateProductCommandHandler(IWriteRepository<Product> productReposi
         {
             Id = request.Id,
             Name = request.Name,
-            Description = request.Description
+            Description = request.Description,
+            CategoryId = request.CategoryId
+
         };
-
-        await productRepository.UpdateEntityAsync(product);
-
-        // Add images here
+        Image image;
+        foreach(var imgFileName in request.fileNames)
+        {
+            image=new Image() { 
+                Id= Guid.NewGuid(),
+                FileName = imgFileName,
+                ProductId = request.Id,
+                Product = product
+            };
+            product.Images.Add(image);
+        }
+            await productRepository.UpdateEntityAsync(product);
     }
 }
