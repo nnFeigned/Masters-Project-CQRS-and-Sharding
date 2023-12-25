@@ -1,7 +1,6 @@
 ﻿using CQRS.Application.Products.Queries;
 using CQRS.Domain.Entities;
-using CQRS.Domain.Repository;
-
+using CQRS.Persistence.BaseRepositories;
 using MediatR;
 
 namespace CQRS.Application.Products.QueryHandlers;

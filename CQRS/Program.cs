@@ -1,9 +1,10 @@
-using CQRS.DataContext;
 using CQRS.Domain.Entities;
-using CQRS.Domain.Repository;
-using CQRS.MongoDB;
-using Microsoft.EntityFrameworkCore;
+using CQRS.HostedServices;
+using CQRS.Persistence.BaseRepositories;
+using CQRS.Persistence.Context;
+using CQRS.Persistence.Repositories;
 
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,16 +18,16 @@ builder.Services.AddScoped(MongoDbContext.GetMongoCollection<Product>);
 builder.Services.AddScoped(MongoDbContext.GetMongoCollection<Category>);
 
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(MongoReadRepository<>));
+builder.Services.AddScoped(typeof(IWriteRepository<>), typeof(SqlWriteRepository<>));
+builder.Services.AddScoped(typeof(ISyncRepository<>), typeof(SqlToMongoSyncRepository<>));
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
+builder.Services.AddHostedService<SyncHostedService>();
 
 builder.Services.AddDbContext<ShopDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString")));
 
-builder.Services.AddScoped<IWriteRepository<Category>, SqlWriteRepository<Category>>();
-builder.Services.AddScoped<IWriteRepository<Product>, SqlWriteRepository<Product>>();
-builder.Services.AddScoped<IWriteRepository<Image>, SqlWriteRepository<Image>>();
 
 builder.Services.AddControllers();
 

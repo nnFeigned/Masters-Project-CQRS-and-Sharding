@@ -1,7 +1,6 @@
 ﻿using CQRS.Application.Categories.Commands;
 using CQRS.Domain.Entities;
-using CQRS.Domain.Repository;
-
+using CQRS.Persistence.BaseRepositories;
 using MediatR;
 
 namespace CQRS.Application.Categories.CommandHandlers;

@@ -1,7 +1,6 @@
-﻿namespace CQRS.Domain.Entities
+﻿namespace CQRS.Domain.Entities;
+
+public class BaseEntity
 {
-    public class BaseEntity
-    {
-        public Guid Id { get; set; }
-    }
+    public Guid Id { get; set; }
 }

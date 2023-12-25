@@ -1,4 +1,4 @@
-﻿namespace CQRS.MongoDB;
+﻿namespace CQRS.Persistence.Context;
 
 public class MongoDBSettings
 {

@@ -1,12 +1,11 @@
 ﻿using CQRS.Application.Categories.Commands;
 using CQRS.Domain.Entities;
-using CQRS.Domain.Repository;
-
+using CQRS.Persistence.BaseRepositories;
 using MediatR;
 
 namespace CQRS.Application.Categories.CommandHandlers;
 
-public class CreateCategoryCommandHandler(IWriteRepository<Category> categoryRepository) : IRequestHandler<CreateCategoryCommand, Category>
+public class CreateCategoryCommandHandler(IWriteRepository<Category> categoryRepository, IWriteRepository<EventLog> eventLogRepository) : IRequestHandler<CreateCategoryCommand, Category>
 {
     public async Task<Category> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
