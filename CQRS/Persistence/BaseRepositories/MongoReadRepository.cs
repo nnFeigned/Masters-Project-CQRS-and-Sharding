@@ -1,10 +1,9 @@
 ﻿using CQRS.Domain.Entities;
-using CQRS.Persistence.BaseRepositories;
 using MongoDB.Driver;
 
-namespace CQRS.Persistence.Repositories;
+namespace CQRS.Persistence.BaseRepositories;
 
-public class MongoReadRepository<T>(IMongoCollection<T> collection) : IReadRepository<T>
+public abstract class MongoReadRepository<T>(IMongoCollection<T> collection) : IReadRepository<T>
     where T : BaseEntity
 {
     public async Task<List<T>> GetAllAsync()

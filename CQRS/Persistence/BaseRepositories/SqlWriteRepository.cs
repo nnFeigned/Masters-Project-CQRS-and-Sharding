@@ -1,11 +1,10 @@
 ﻿using CQRS.Domain.Entities;
-using CQRS.Persistence.BaseRepositories;
 using CQRS.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace CQRS.Persistence.Repositories;
+namespace CQRS.Persistence.BaseRepositories;
 
-public class SqlWriteRepository<T>(ShopDbContext dbContext) : IWriteRepository<T>
+public abstract class SqlWriteRepository<T>(ShopDbContext dbContext) : IWriteRepository<T>
     where T : BaseEntity
 {
     private readonly DbSet<T> _dbSet = dbContext.Set<T>();

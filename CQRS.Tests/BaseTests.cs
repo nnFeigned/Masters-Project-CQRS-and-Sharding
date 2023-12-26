@@ -1,4 +1,5 @@
 using CQRS.Domain.Entities;
+using CQRS.Persistence.BaseRepositories;
 using CQRS.Persistence.Context;
 using CQRS.Persistence.Repositories;
 
@@ -38,13 +39,13 @@ public class BaseTests
 
     protected static EventLogRepository EventLogRepository => new(ShopDbContext);
 
-    protected static SqlWriteRepository<Category> WriteCategoryRepository => new(ShopDbContext);
-    protected static SqlToMongoSyncRepository<Category> SyncCategoriesRepository => new(ShopDbContext, Categories);
-    protected static MongoReadRepository<Category> ReadCategoryRepository => new(Categories);
+    protected static IWriteRepository<Category> WriteCategoryRepository => new CategoryWriteRepository(ShopDbContext);
+    protected static ISyncRepository<Category> SyncCategoriesRepository => new CategorySyncRepository(ShopDbContext, Categories);
+    protected static IReadRepository<Category> ReadCategoryRepository => new CategoryReadRepository(Categories);
 
-    protected static SqlToMongoSyncRepository<Product> SyncProductsRepository => new(ShopDbContext, Products);
-    protected static SqlWriteRepository<Product> WriteProductRepository => new(ShopDbContext);
-    protected static MongoReadRepository<Product> ReadProductRepository => new(Products);
+    protected static IWriteRepository<Product> WriteProductRepository => new ProductWriteRepository(ShopDbContext);
+    protected static ISyncRepository<Product> SyncProductsRepository => new ProductSyncRepository(ShopDbContext, Products);
+    protected static IReadRepository<Product> ReadProductRepository => new ProductReadRepository(Products);
 
 
     static BaseTests()

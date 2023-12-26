@@ -5,7 +5,6 @@ namespace CQRS.Domain.Entities;
 
 public class Image : BaseEntity
 {
-
     [BsonElement("imagePath")]
     public required string FileName { get; set; }
 

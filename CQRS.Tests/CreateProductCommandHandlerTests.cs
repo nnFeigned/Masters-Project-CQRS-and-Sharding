@@ -7,75 +7,74 @@ using CQRS.Application.Products.QueryHandlers;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace CQRS.Tests
+namespace CQRS.Tests;
+
+[TestClass]
+public class CreateProductCommandHandlerTests : BaseTests
 {
-    [TestClass]
-    public class CreateProductCommandHandlerTests : BaseTests
+    private readonly CreateCategoryCommandHandler _createCategoryCommandHandler = new(WriteCategoryRepository);
+    private readonly CreateProductCommandHandler _createProductCommandHandler = new(WriteProductRepository);
+    private readonly SyncProductsCommandHandler _syncProductsCommandHandler = new(EventLogRepository, SyncProductsRepository);
+    private readonly GetProductByIdQueryHandler _getProductByIdQueryHandler = new(ReadProductRepository);
+
+
+    [TestMethod]
+    public async Task CreateProductShouldAddProductToSqlDatabase()
     {
-        private readonly CreateCategoryCommandHandler _createCategoryCommandHandler = new(WriteCategoryRepository);
-        private readonly CreateProductCommandHandler _createProductCommandHandler = new(WriteProductRepository);
-        private readonly SyncProductsCommandHandler _syncProductsCommandHandler = new(EventLogRepository, SyncProductsRepository);
-        private readonly GetProductByIdQueryHandler _getProductByIdQueryHandler = new(ReadProductRepository);
-
-
-        [TestMethod]
-        public async Task CreateProductShouldAddProductToSqlDatabase()
+        var createCategoryCommand = new CreateCategoryCommand
         {
-            var createCategoryCommand = new CreateCategoryCommand
-            {
-                Name = "Test category" + Guid.NewGuid()
-            };
+            Name = "Test category" + Guid.NewGuid()
+        };
 
-            await _createCategoryCommandHandler.Handle(createCategoryCommand, CancellationToken.None);
+        await _createCategoryCommandHandler.Handle(createCategoryCommand, CancellationToken.None);
 
-            var createdCategory = ShopDbContext.Categories.FirstOrDefault(category => category.Name == createCategoryCommand.Name);
+        var createdCategory = ShopDbContext.Categories.FirstOrDefault(category => category.Name == createCategoryCommand.Name);
 
-            var createProductCommand = new CreateProductCommand
-            {
-                CategoryId = createdCategory!.Id,
-                Name = "Test product" + Guid.NewGuid(),
-                Images = ["Image" + Guid.NewGuid()]
-            };
-
-            await _createProductCommandHandler.Handle(createProductCommand, CancellationToken.None);
-
-            var createdProduct = ShopDbContext.Products.Include(product => product.Images).FirstOrDefault(product => product.Name == createProductCommand.Name);
-
-            Assert.IsNotNull(createdProduct);
-            Assert.AreEqual(createdProduct.Name, createProductCommand.Name);
-            Assert.IsTrue(createdProduct.Images.Count > 0);
-        }
-
-        [TestMethod]
-        public async Task CreateProductShouldAddProductToMongoDatabaseAfterSync()
+        var createProductCommand = new CreateProductCommand
         {
-            var createCategoryCommand = new CreateCategoryCommand
-            {
-                Name = "Test category" + Guid.NewGuid()
-            };
+            CategoryId = createdCategory!.Id,
+            Name = "Test product" + Guid.NewGuid(),
+            Images = ["Image" + Guid.NewGuid()]
+        };
 
-            await _createCategoryCommandHandler.Handle(createCategoryCommand, CancellationToken.None);
+        await _createProductCommandHandler.Handle(createProductCommand, CancellationToken.None);
 
-            var createdCategory = ShopDbContext.Categories.FirstOrDefault(category => category.Name == createCategoryCommand.Name);
+        var createdProduct = ShopDbContext.Products.Include(product => product.Images).FirstOrDefault(product => product.Name == createProductCommand.Name);
 
-            var createProductCommand = new CreateProductCommand
-            {
-                CategoryId = createdCategory!.Id,
-                Name = "Test product" + Guid.NewGuid(),
-                Images = ["Image" + Guid.NewGuid()]
-            };
+        Assert.IsNotNull(createdProduct);
+        Assert.AreEqual(createdProduct.Name, createProductCommand.Name);
+        Assert.IsTrue(createdProduct.Images.Count > 0);
+    }
 
-            await _createProductCommandHandler.Handle(createProductCommand, CancellationToken.None);
+    [TestMethod]
+    public async Task CreateProductShouldAddProductToMongoDatabaseAfterSync()
+    {
+        var createCategoryCommand = new CreateCategoryCommand
+        {
+            Name = "Test category" + Guid.NewGuid()
+        };
 
-            await _syncProductsCommandHandler.Handle(new SyncProductsCommand(), CancellationToken.None);
+        await _createCategoryCommandHandler.Handle(createCategoryCommand, CancellationToken.None);
 
-            var createdProduct = ShopDbContext.Products.Include(product => product.Images).FirstOrDefault(product => product.Name == createProductCommand.Name);
+        var createdCategory = ShopDbContext.Categories.FirstOrDefault(category => category.Name == createCategoryCommand.Name);
 
-            var createdMongoProduct = await _getProductByIdQueryHandler.Handle(new GetProductByIdQuery { Id = createdProduct!.Id }, CancellationToken.None);
+        var createProductCommand = new CreateProductCommand
+        {
+            CategoryId = createdCategory!.Id,
+            Name = "Test product" + Guid.NewGuid(),
+            Images = ["Image" + Guid.NewGuid()]
+        };
 
-            Assert.IsNotNull(createdMongoProduct);
-            Assert.AreEqual(createdMongoProduct.Name, createdProduct.Name);
-            Assert.IsTrue(createdMongoProduct.Images.Count > 0);
-        }
+        await _createProductCommandHandler.Handle(createProductCommand, CancellationToken.None);
+
+        await _syncProductsCommandHandler.Handle(new SyncProductsCommand(), CancellationToken.None);
+
+        var createdProduct = ShopDbContext.Products.Include(product => product.Images).FirstOrDefault(product => product.Name == createProductCommand.Name);
+
+        var createdMongoProduct = await _getProductByIdQueryHandler.Handle(new GetProductByIdQuery { Id = createdProduct!.Id }, CancellationToken.None);
+
+        Assert.IsNotNull(createdMongoProduct);
+        Assert.AreEqual(createdMongoProduct.Name, createdProduct.Name);
+        Assert.IsTrue(createdMongoProduct.Images.Count > 0);
     }
 }
