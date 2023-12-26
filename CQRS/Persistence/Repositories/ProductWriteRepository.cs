@@ -8,6 +8,7 @@ namespace CQRS.Persistence.Repositories;
 public class ProductWriteRepository(ShopDbContext dbContext) : SqlWriteRepository<Product>(dbContext)
 {
     private readonly DbSet<Product> _productDbSet = dbContext.Set<Product>();
+    private readonly DbSet<Image> _imageDbSet = dbContext.Set<Image>();
 
     public override async Task<Product> AddEntityAsync(Product entity)
     {
@@ -27,15 +28,17 @@ public class ProductWriteRepository(ShopDbContext dbContext) : SqlWriteRepositor
             existingProduct.Description = entity.Description;
             existingProduct.CategoryId = entity.CategoryId;
 
-            ////foreach (var existingImage in existingProduct.Images.ToList())
-            ////{
-            ////    _imageDbSet.Remove(existingImage);
-            ////}
+            foreach (var existingImage in existingProduct.Images.ToList())
+            {
+                _imageDbSet.Remove(existingImage);
+            }
 
-            ////foreach (var newImage in entity.Images)
-            ////{
-            ////    _imageDbSet.Add(newImage);
-            ////}
+            foreach (var newImage in entity.Images)
+            {
+                existingProduct.Images.Add(newImage);
+            }
+
+            // todo: updated filename for existing image
         }
 
         await dbContext.SaveChangesAsync();
@@ -48,11 +51,6 @@ public class ProductWriteRepository(ShopDbContext dbContext) : SqlWriteRepositor
 
         if (product != null)
         {
-            ////foreach (var image in product.Images.ToList())
-            ////{
-            ////    _imageDbSet.Remove(image);
-            ////}
-
             _productDbSet.Remove(product);
             await dbContext.SaveChangesAsync();
         }

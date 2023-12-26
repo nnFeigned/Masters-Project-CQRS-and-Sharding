@@ -1,4 +1,6 @@
-﻿namespace CQRS.Domain.Entities;
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace CQRS.Domain.Entities;
 
 public class Product : BaseEntity
 {
@@ -6,6 +8,8 @@ public class Product : BaseEntity
     public string? Description { get; set; }
 
     public Guid CategoryId { get; set; }
+
+    [BsonIgnore]
     public Category Category { get; set; }
 
     public ICollection<Image> Images { get; set; } = new List<Image>();
