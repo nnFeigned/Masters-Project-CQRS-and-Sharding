@@ -30,7 +30,7 @@ public class SyncProductsCommandHandler(IEventLogRepository eventLogRepository, 
             else if (lastLog.ActionType == EntityState.Modified.ToString())
             {
                 var product = await syncProductRepository.GetEntityByIdAsync(lastLog.EntityId);
-                await syncProductRepository.UpsertEntityAsync(product!);
+                await syncProductRepository.UpdateEntityAsync(product!);
             }
             else if (lastLog.ActionType == EntityState.Deleted.ToString())
             {

@@ -29,7 +29,7 @@ public class SqlToMongoSyncRepository<T>(ShopDbContext dbContext, IMongoCollecti
         return entity;
     }
 
-    public async Task UpsertEntityAsync(T entity)
+    public async Task UpdateEntityAsync(T entity)
     {
         await collection.ReplaceOneAsync(document => document.Id == entity.Id, entity, new ReplaceOptions { IsUpsert = true });
     }

@@ -30,7 +30,7 @@ public class SyncCategoriesCommandHandler(IEventLogRepository eventLogRepository
             else if (lastLog.ActionType == EntityState.Modified.ToString())
             {
                 var category = await syncCategoryRepository.GetEntityByIdAsync(lastLog.EntityId);
-                await syncCategoryRepository.UpsertEntityAsync(category!);
+                await syncCategoryRepository.UpdateEntityAsync(category!);
             }
             else if (lastLog.ActionType == EntityState.Deleted.ToString())
             {

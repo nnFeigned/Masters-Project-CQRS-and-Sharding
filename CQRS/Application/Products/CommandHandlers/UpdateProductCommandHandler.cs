@@ -28,6 +28,6 @@ public class UpdateProductCommandHandler(IWriteRepository<Product> productReposi
             };
             product.Images.Add(image);
         }
-            await productRepository.UpsertEntityAsync(product);
+            await productRepository.UpdateEntityAsync(product);
     }
 }

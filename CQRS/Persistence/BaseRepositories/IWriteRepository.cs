@@ -3,6 +3,6 @@
 public interface IWriteRepository<T>
 {
     Task<T> AddEntityAsync(T entity);
-    Task UpsertEntityAsync(T entity);
+    Task UpdateEntityAsync(T entity);
     Task DeleteEntityAsync(Guid id);
 }

@@ -20,6 +20,6 @@ public class UpdateCategoryCommandHandler(IWriteRepository<Category> categoryRep
             // Products = request.Products
         };
 
-        await categoryRepository.UpsertEntityAsync(category);
+        await categoryRepository.UpdateEntityAsync(category);
     }
 }

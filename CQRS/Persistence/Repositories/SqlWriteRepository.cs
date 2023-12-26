@@ -18,7 +18,7 @@ public class SqlWriteRepository<T>(ShopDbContext dbContext) : IWriteRepository<T
         return entity;
     }
 
-    public virtual async Task UpsertEntityAsync(T entity)
+    public virtual async Task UpdateEntityAsync(T entity)
     {
         dbContext.Entry(entity).State = EntityState.Modified;
         await dbContext.SaveChangesAsync();
