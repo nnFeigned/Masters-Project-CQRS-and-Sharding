@@ -29,10 +29,9 @@ public class SqlToMongoSyncRepository<T>(ShopDbContext dbContext, IMongoCollecti
         return entity;
     }
 
-    public async Task UpdateEntityAsync(T entity)
+    public async Task UpsertEntityAsync(T entity)
     {
-        // todo: test
-        await collection.ReplaceOneAsync(document => document.Id == entity.Id, entity);
+        await collection.ReplaceOneAsync(document => document.Id == entity.Id, entity, new ReplaceOptions { IsUpsert = true });
     }
 
     public async Task DeleteEntityAsync(Guid id)

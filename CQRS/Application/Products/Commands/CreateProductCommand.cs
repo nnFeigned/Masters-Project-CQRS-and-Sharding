@@ -11,5 +11,5 @@ public class CreateProductCommand : IRequest<Product>
 
     public Guid CategoryId { get; set; }
 
-    public List<string> fileNames { get; set; }
+    public List<string> Images { get; set; } = new();
 }

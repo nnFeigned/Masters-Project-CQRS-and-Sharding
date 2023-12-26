@@ -8,6 +8,7 @@ using MongoDB.Driver;
 
 namespace CQRS.Tests;
 
+[TestClass]
 public class BaseTests
 {
     private const string TestSqlConnectionString = "Data Source=.\\SQLEXPRESS;Database=CQRS_Test;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
@@ -70,6 +71,8 @@ public class BaseTests
     {
         ShopDbContext.Database.EnsureDeleted();
         ShopDbContext.Database.EnsureCreated();
+
+        Client.DropDatabase(TestMongoDbSettings.DatabaseName);
     }
 
     [AssemblyCleanup]

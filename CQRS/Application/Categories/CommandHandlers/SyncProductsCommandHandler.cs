@@ -22,7 +22,7 @@ public class SyncProductsCommandHandler(IEventLogRepository eventLogRepository, 
         foreach (var logPerProduct in logsPerProduct)
         {
             var lastLog = logPerProduct.OrderBy(log => log.Timestamp).Last();
-            if (lastLog.ActionType != EntityState.Added.ToString())
+            if (lastLog.ActionType == EntityState.Added.ToString())
             {
                 var product = await syncProductRepository.GetEntityByIdAsync(lastLog.EntityId);
                 await syncProductRepository.AddEntityAsync(product!);
@@ -30,7 +30,7 @@ public class SyncProductsCommandHandler(IEventLogRepository eventLogRepository, 
             else if (lastLog.ActionType == EntityState.Modified.ToString())
             {
                 var product = await syncProductRepository.GetEntityByIdAsync(lastLog.EntityId);
-                await syncProductRepository.UpdateEntityAsync(product!);
+                await syncProductRepository.UpsertEntityAsync(product!);
             }
             else if (lastLog.ActionType == EntityState.Deleted.ToString())
             {

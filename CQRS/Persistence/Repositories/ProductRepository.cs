@@ -20,7 +20,7 @@ namespace CQRS.Persistence.Repositories
             return entity;
         }
 
-        public override async Task UpdateEntityAsync(Product entity)
+        public override async Task UpsertEntityAsync(Product entity)
         {
             var existingProduct = await _productDbSet.FindAsync(entity.Id);
 

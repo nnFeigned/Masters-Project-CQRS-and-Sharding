@@ -16,17 +16,17 @@ public class CreateProductCommandHandler(IWriteRepository<Product> productReposi
             Description = request.Description,
             CategoryId = request.CategoryId
         };
-        Image image;
-        foreach(var fileNameImg in request.fileNames)
+
+        foreach(var imageFileName in request.Images)
         {
-            image=new Image() { 
-                Id = Guid.NewGuid(), 
-                ProductId = product.Id, 
-                FileName = fileNameImg,
-                Product = product
+            var image = new Image
+            { 
+                FileName = imageFileName,
             };
+
             product.Images.Add(image);
         }
+
         await productRepository.AddEntityAsync(product);
 
         return product;
