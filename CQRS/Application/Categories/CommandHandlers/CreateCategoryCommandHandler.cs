@@ -5,14 +5,14 @@ using MediatR;
 
 namespace CQRS.Application.Categories.CommandHandlers;
 
-public class CreateCategoryCommandHandler(IWriteRepository<Category> categoryRepository, IWriteRepository<EventLog> eventLogRepository) : IRequestHandler<CreateCategoryCommand, Category>
+public class CreateCategoryCommandHandler(IWriteRepository<Category> categoryRepository) : IRequestHandler<CreateCategoryCommand, Category>
 {
     public async Task<Category> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = new Category
         {
             Id = Guid.NewGuid(),
-            Name = request.Name,
+            Name = request.Name
         };
 
         await categoryRepository.AddEntityAsync(category);

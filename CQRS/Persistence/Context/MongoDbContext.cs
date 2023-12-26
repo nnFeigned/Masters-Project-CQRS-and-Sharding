@@ -29,7 +29,7 @@ public static class MongoDbContext
         {
             { } type when type == typeof(Product) => settings.Value.ProductCollectionName,
             { } type when type == typeof(Category) => settings.Value.CategoryCollectionName,
-            _ => throw new ArgumentException($"Unsupported type: {typeof(T)}"),
+            _ => throw new ArgumentException($"Unsupported type: {typeof(T)}")
         };
     }
 }

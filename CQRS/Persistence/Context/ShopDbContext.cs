@@ -34,7 +34,7 @@ public class ShopDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
     }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         var entitiesToTrack = this.ChangeTracker.Entries()
             .Where(entityEntry => entityEntry.State != EntityState.Unchanged && entityEntry.State != EntityState.Detached)

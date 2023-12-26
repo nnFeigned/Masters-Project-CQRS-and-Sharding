@@ -4,17 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Persistence.Repositories
 {
-    public class ProductRepository : SqlWriteRepository<Product>
+    public class ProductRepository(ShopDbContext dbContext) : SqlWriteRepository<Product>(dbContext)
     {
-        private readonly ShopDbContext _dbContext;
-        private readonly DbSet<Product> _productDbSet;
-        private readonly DbSet<Image> _imageDbSet;
-        public ProductRepository(ShopDbContext dbContext) : base(dbContext)
-        {
-            _dbContext= dbContext;
-            _productDbSet = dbContext.Set<Product>();
-            _imageDbSet = dbContext.Set<Image>();
-        }
+        private readonly DbSet<Product> _productDbSet = dbContext.Set<Product>();
+        private readonly DbSet<Image> _imageDbSet = dbContext.Set<Image>();
+
         public override async Task<Product> AddEntityAsync(Product entity)
         {
             await _productDbSet.AddAsync(entity);
@@ -22,7 +16,7 @@ namespace CQRS.Persistence.Repositories
             {
                 await _imageDbSet.AddAsync(image);
             }
-            await _dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
             return entity;
         }
 
@@ -47,7 +41,7 @@ namespace CQRS.Persistence.Repositories
                 }
             }
 
-            await _dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
 
 
@@ -63,7 +57,7 @@ namespace CQRS.Persistence.Repositories
                 }
 
                 _productDbSet.Remove(product);
-                await _dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
             }
         }
 

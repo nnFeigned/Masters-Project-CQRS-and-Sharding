@@ -32,7 +32,7 @@ public class SqlToMongoSyncRepository<T>(ShopDbContext dbContext, IMongoCollecti
     public async Task UpdateEntityAsync(T entity)
     {
         // todo: test
-        await collection.UpdateOneAsync(document => document.Id == entity.Id, new ObjectUpdateDefinition<T>(entity));
+        await collection.ReplaceOneAsync(document => document.Id == entity.Id, entity);
     }
 
     public async Task DeleteEntityAsync(Guid id)

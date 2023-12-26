@@ -10,6 +10,7 @@ public class Image : BaseEntity
     public required string FileName { get; set; }
 
     public Guid ProductId { get; set; }
+
     [JsonIgnore]
     public Product Product { get; set; }
 }

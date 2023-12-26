@@ -11,12 +11,13 @@ public class UpdateCategoryCommandHandler(IWriteRepository<Category> categoryRep
     {
         var category = new Category
         {
-            Name = request.Name,
+            Id = request.Id,
+            Name = request.Name
 
             // It will not work like that, you need to check what was added, what changed, what removed
             // Check https://learn.microsoft.com/en-us/ef/core/saving/disconnected-entities
             // Handling deletes code example
-            Products = request.Products
+            // Products = request.Products
         };
 
         await categoryRepository.UpdateEntityAsync(category);
