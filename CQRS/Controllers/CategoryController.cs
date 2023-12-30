@@ -17,9 +17,9 @@ public class CategoryController(IMediator mediator) : BaseController(mediator)
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetCategoryAsync(GetCategoryByIdQuery getCategoryByIdQuery)
+    public async Task<ActionResult> GetCategoryAsync(Guid id)
     {
-        var category = await Mediator.Send(getCategoryByIdQuery);
+        var category = await Mediator.Send(new GetCategoryByIdQuery() { Id=id });
 
         if (category == null)
         {
@@ -44,9 +44,9 @@ public class CategoryController(IMediator mediator) : BaseController(mediator)
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCategory(DeleteCategoryCommand deleteCategoryCommand)
+    public async Task<IActionResult> DeleteCategory(Guid id)
     {
-        await Mediator.Send(deleteCategoryCommand);
+        await Mediator.Send(new DeleteCategoryCommand() { Id=id });
         return Ok();
     }
 }

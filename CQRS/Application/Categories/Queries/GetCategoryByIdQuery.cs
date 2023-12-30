@@ -6,5 +6,5 @@ namespace CQRS.Application.Categories.Queries;
 
 public class GetCategoryByIdQuery : IRequest<Category?>
 {
-    public required Guid Id { get; set; }
+    public  Guid Id { get; set; }
 }

@@ -4,6 +4,7 @@ using CQRS.Application.Products.Queries;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 
+
 namespace CQRS.Controllers;
 
 [Route("api/[controller]")]
@@ -17,9 +18,10 @@ public class ProductController(IMediator mediator) : BaseController(mediator)
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult> GetProductAsync(GetProductByIdQuery getProductByIdQuery)
+    public async Task<ActionResult> GetProductAsync(Guid id)
     {
-        var product = await Mediator.Send(getProductByIdQuery);
+
+        var product = await Mediator.Send(new GetProductByIdQuery() { Id=id });
 
         if (product == null)
         {
@@ -28,6 +30,7 @@ public class ProductController(IMediator mediator) : BaseController(mediator)
 
         return Ok(product);
     }
+
 
     [HttpPost]
     public async Task<IActionResult> CreateProduct(CreateProductCommand createProductCommand)
@@ -45,9 +48,9 @@ public class ProductController(IMediator mediator) : BaseController(mediator)
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteProduct(DeleteProductCommand deleteProductCommand)
+    public async Task<IActionResult> DeleteProduct(Guid id)
     {
-        await Mediator.Send(deleteProductCommand);
+        await Mediator.Send(new DeleteProductCommand() { Id=id });
         return Ok();
     }
 }
