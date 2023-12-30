@@ -17,17 +17,15 @@ public class UpdateProductCommandHandler(IWriteRepository<Product> productReposi
             CategoryId = request.CategoryId
 
         };
-        Image image;
-        foreach(var imgFileName in request.fileNames)
+        foreach (var imageFileName in request.fileNames)
         {
-            image=new Image() { 
-                Id= Guid.NewGuid(),
-                FileName = imgFileName,
-                ProductId = request.Id,
-                Product = product
+            var image = new Image
+            {
+                FileName = imageFileName,
             };
+
             product.Images.Add(image);
         }
-            await productRepository.UpdateEntityAsync(product);
+        await productRepository.UpdateEntityAsync(product);
     }
 }

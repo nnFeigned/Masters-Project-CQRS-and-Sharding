@@ -4,33 +4,33 @@ using MediatR;
 
 namespace CQRS.HostedServices;
 
-public class SyncHostedService(IMediator mediator) : IHostedService, IDisposable
+public class SyncHostedService : BackgroundService
 {
-    private Timer? _timer;
+    private readonly IServiceScopeFactory _scopeFactory;
 
-    public Task StartAsync(CancellationToken stoppingToken)
+    public SyncHostedService(IServiceScopeFactory scopeFactory)
     {
-        _timer = new Timer(SyncEntities, null, TimeSpan.Zero,
-            TimeSpan.FromMinutes(1));
-
-        return Task.CompletedTask;
+        _scopeFactory = scopeFactory ?? throw new ArgumentNullException(nameof(scopeFactory));
     }
 
-    private async void SyncEntities(object? state)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await mediator.Send(new SyncCategoriesCommand());
-        await mediator.Send(new SyncProductsCommand());
+        using (var scope = _scopeFactory.CreateScope())
+        {
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+            await SyncEntities(mediator, stoppingToken);
+        }
     }
 
-    public Task StopAsync(CancellationToken stoppingToken)
+    private async Task SyncEntities(IMediator mediator, CancellationToken stoppingToken)
     {
-        _timer?.Change(Timeout.Infinite, 0);
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
 
-        return Task.CompletedTask;
-    }
-
-    public void Dispose()
-    {
-        _timer?.Dispose();
+            await mediator.Send(new SyncCategoriesCommand());
+            await mediator.Send(new SyncProductsCommand());
+        }
     }
 }

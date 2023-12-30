@@ -11,5 +11,6 @@ public class Image : BaseEntity
     public Guid ProductId { get; set; }
 
     [BsonIgnore]
+    [JsonIgnore]
     public Product Product { get; set; }
 }

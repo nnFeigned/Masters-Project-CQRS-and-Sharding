@@ -9,5 +9,5 @@ public class UpdateProductCommand : IRequest
     public string? Description { get; set; }
 
     public Guid CategoryId { get; set; }
-    public List<string> fileNames { get; set; }
+    public List<string> fileNames { get; set; } = new();
 }
