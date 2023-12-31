@@ -4,6 +4,4 @@ using MongoDB.Driver;
 
 namespace CQRS.Persistence.Repositories;
 
-public class ProductReadRepository(IMongoCollection<Product> collection) : MongoReadRepository<Product>(collection)
-{
-}
+public class ProductReadRepository(IMongoCollection<Product> collection) : MongoReadRepository<Product>(collection);
