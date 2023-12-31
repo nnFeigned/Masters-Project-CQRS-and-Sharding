@@ -16,13 +16,11 @@ namespace CQRS.HostedServices
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                using (var scope = _scopeFactory.CreateScope())
-                {
-                    var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-                    await SyncEntities(mediator);
+                using var scope = _scopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+                await SyncEntities(mediator);
 
-                    await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
-                }
+                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
             }
         }
 

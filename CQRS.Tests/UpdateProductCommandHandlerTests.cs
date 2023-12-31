@@ -46,7 +46,7 @@ namespace CQRS.Tests
                 Id = createdProduct!.Id,
                 Name = "Updated product name" + Guid.NewGuid(),
                 fileNames = ["UpdatedImage" + Guid.NewGuid()],
-                CategoryId = createdCategory!.Id
+                CategoryId = createdCategory.Id
             };
 
             await _updateProductCommandHandler.Handle(updateProductCommand, CancellationToken.None);
@@ -90,7 +90,7 @@ namespace CQRS.Tests
                 Id = createdProduct!.Id,
                 Name = "Updated product name" + Guid.NewGuid(),
                 fileNames = ["UpdatedImage" + Guid.NewGuid()],
-                CategoryId = createdCategory!.Id
+                CategoryId = createdCategory.Id
             };
 
             await _updateProductCommandHandler.Handle(updateProductCommand, CancellationToken.None);
