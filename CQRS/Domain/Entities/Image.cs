@@ -12,5 +12,5 @@ public class Image : BaseEntity
 
     [BsonIgnore]
     [JsonIgnore]
-    public Product Product { get; set; }
+    public required Product Product { get; set; }
 }

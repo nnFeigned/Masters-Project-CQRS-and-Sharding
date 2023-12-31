@@ -17,7 +17,7 @@ public class UpdateProductCommandHandler(IWriteRepository<Product> productReposi
             CategoryId = request.CategoryId
 
         };
-        foreach (var imageFileName in request.fileNames)
+        foreach (var imageFileName in request.FileNames)
         {
             var image = new Image
             {

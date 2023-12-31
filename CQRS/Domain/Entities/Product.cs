@@ -10,7 +10,7 @@ public class Product : BaseEntity
     public Guid CategoryId { get; set; }
 
     [BsonIgnore]
-    public Category Category { get; set; }
+    public required Category Category { get; set; }
 
     public ICollection<Image> Images { get; set; } = new List<Image>();
 }

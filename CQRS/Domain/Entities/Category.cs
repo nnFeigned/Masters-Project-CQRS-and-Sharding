@@ -4,8 +4,8 @@ namespace CQRS.Domain.Entities;
 
 public class Category : BaseEntity
 {
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     [BsonElement("Products")]
-    public virtual ICollection<Product> Products { get; set; }
+    public virtual List<Product> Products { get; set; } = new();
 }

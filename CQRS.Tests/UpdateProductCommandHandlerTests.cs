@@ -45,7 +45,7 @@ namespace CQRS.Tests
             {
                 Id = createdProduct!.Id,
                 Name = "Updated product name" + Guid.NewGuid(),
-                fileNames = ["UpdatedImage" + Guid.NewGuid()],
+                FileNames = ["UpdatedImage" + Guid.NewGuid()],
                 CategoryId = createdCategory.Id
             };
 
@@ -89,7 +89,7 @@ namespace CQRS.Tests
             {
                 Id = createdProduct!.Id,
                 Name = "Updated product name" + Guid.NewGuid(),
-                fileNames = ["UpdatedImage" + Guid.NewGuid()],
+                FileNames = ["UpdatedImage" + Guid.NewGuid()],
                 CategoryId = createdCategory.Id
             };
 

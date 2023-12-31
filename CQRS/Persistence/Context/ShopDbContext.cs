@@ -16,7 +16,7 @@ public class ShopDbContext : DbContext
     public ShopDbContext(DbContextOptions<ShopDbContext> options)
         : base(options)
     {
-        Database.EnsureCreated();
+        this.Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
