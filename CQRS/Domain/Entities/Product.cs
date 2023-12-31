@@ -1,5 +1,4 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
-using System.Text.Json.Serialization;
 
 namespace CQRS.Domain.Entities;
 

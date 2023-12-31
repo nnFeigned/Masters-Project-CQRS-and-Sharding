@@ -1,10 +1,5 @@
 ﻿using CQRS.Application.Categories.Commands;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CQRS.HostedServices
 {

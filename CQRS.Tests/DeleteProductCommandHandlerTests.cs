@@ -5,11 +5,6 @@ using CQRS.Application.Products.Commands;
 using CQRS.Application.Products.Queries;
 using CQRS.Application.Products.QueryHandlers;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CQRS.Tests
 {
