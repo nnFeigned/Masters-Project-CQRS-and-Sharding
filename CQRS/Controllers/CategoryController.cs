@@ -1,8 +1,9 @@
 ﻿using CQRS.Application.Categories.Commands;
 using CQRS.Application.Categories.Queries;
 
-using Microsoft.AspNetCore.Mvc;
 using MediatR;
+
+using Microsoft.AspNetCore.Mvc;
 
 namespace CQRS.Controllers;
 

@@ -4,6 +4,7 @@ using CQRS.Application.Products.CommandHandlers;
 using CQRS.Application.Products.Commands;
 using CQRS.Application.Products.Queries;
 using CQRS.Application.Products.QueryHandlers;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Tests;
